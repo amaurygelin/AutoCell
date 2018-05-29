@@ -1,5 +1,4 @@
-#include "grid.h"
-
+#include "gridGenerator.h"
 
 void Grid::setCell(unsigned int i,unsigned int j,int val){
     if(i>=nb_rows || j>=nb_columns){
@@ -26,4 +25,9 @@ std::ostream & operator<<(std::ostream & f,const Grid & g){
         f << std::endl;
     }
     return f;
+}
+
+void Grid::executeGridGenerator(GridGenerator& generation_strategy)
+{
+        generation_strategy.generateGrid(*this);
 }

@@ -186,11 +186,11 @@
 	"Grid.h"
 	"Automaton.h"
 
-1528032213 source:c:\users\amaur\documents\autocell\autocell\abstractgameoflife.cpp
+1528150943 source:c:\users\amaur\documents\autocell\autocell\abstractgameoflife.cpp
 	<iostream>
 	"AbstractGameOfLife.h"
 
-1528032213 c:\users\amaur\documents\autocell\autocell\abstractgameoflife.h
+1528147107 c:\users\amaur\documents\autocell\autocell\abstractgameoflife.h
 	"Automaton.h"
 
 1528032213 c:\users\amaur\documents\autocell\autocell\automaton.h
@@ -205,7 +205,7 @@
 	<iostream>
 	"Automaton.h"
 
-1528032213 source:c:\users\amaur\documents\autocell\autocell\elementaryautomaton.cpp
+1528139811 source:c:\users\amaur\documents\autocell\autocell\elementaryautomaton.cpp
 	<iostream>
 	"ElementaryAutomaton.h"
 
@@ -213,11 +213,11 @@
 	<string>
 	"Automaton.h"
 
-1528137992 source:c:\users\amaur\documents\autocell\autocell\gameoflife.cpp
+1528147118 source:c:\users\amaur\documents\autocell\autocell\gameoflife.cpp
 	<iostream>
 	"GameOfLife.h"
 
-1528032213 c:\users\amaur\documents\autocell\autocell\gameoflife.h
+1528147127 c:\users\amaur\documents\autocell\autocell\gameoflife.h
 	"AbstractGameOfLife.h"
 
 1528037741 source:c:\users\amaur\documents\autocell\autocell\grid.cpp
@@ -226,7 +226,7 @@
 1528032213 c:\users\amaur\documents\autocell\autocell\gridgenerator.h
 	"grid.h"
 
-1528137787 source:c:\users\amaur\documents\autocell\autocell\main.cpp
+1528151115 source:c:\users\amaur\documents\autocell\autocell\main.cpp
 	<iostream>
 	"Automaton.h"
 	"ElementaryAutomaton.h"
@@ -234,6 +234,7 @@
 	"grid.h"
 	"randomGridGenerator.h"
 	"simulator.h"
+	"QuadLife.h"
 
 1528032213 c:\users\amaur\documents\autocell\autocell\randomgridgenerator.h
 	"GridGenerator.h"
@@ -242,11 +243,11 @@
 	"Grid.h"
 	"Automaton.h"
 
-1528032213 source:c:\users\amaur\documents\autocell\autocell\quadlife.cpp
+1528151407 source:c:\users\amaur\documents\autocell\autocell\quadlife.cpp
 	<iostream>
 	"QuadLife.h"
 
-1528032213 c:\users\amaur\documents\autocell\autocell\quadlife.h
+1528147097 c:\users\amaur\documents\autocell\autocell\quadlife.h
 	"AbstractGameOfLife.h"
 
 1528032213 source:c:\users\amaur\documents\autocell\autocell\randomgridgenerator.cpp

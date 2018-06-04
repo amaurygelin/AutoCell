@@ -9,13 +9,15 @@ void ElementaryAutomaton::transition(const Grid& src, Grid& dest) const
     {
         throw "Grids with different number of columns";
     }
-    unsigned int i(0);
+    unsigned int i(0); //only one row
     for(unsigned int j(0); j<src.getNbCol(); j++)
     {
         unsigned int conf = 0;
-        if(j>0) conf += src.getCell(i, j-1)*4;
+        if(j>0)
+            conf += src.getCell(i, j-1)*4;
         conf += src.getCell(i, j)*2;
-        if(j<src.getNbCol()-1) conf += src.getCell(i, j+1);
+        if(j<src.getNbCol()-1)
+            conf += src.getCell(i, j+1);
         dest.setCell(i, j, rule_bits[7-conf] - '0');
     }
 }

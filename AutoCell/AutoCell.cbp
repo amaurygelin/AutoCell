@@ -50,6 +50,8 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="randomGridGenerator.cpp" />
 		<Unit filename="randomGridGenerator.h" />
+		<Unit filename="simulator.cpp" />
+		<Unit filename="simulator.h" />
 		<Unit filename="symmetricDGridGenerator.cpp" />
 		<Unit filename="symmetricDGridGenerator.h" />
 		<Unit filename="symmetricHGridGenerator.cpp" />

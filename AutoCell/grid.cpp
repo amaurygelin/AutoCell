@@ -31,3 +31,15 @@ void Grid::executeGridGenerator(GridGenerator& generation_strategy)
 {
         generation_strategy.generateGrid(*this);
 }
+
+
+Grid & Grid::operator=(const Grid & g){
+    if(this != &g){
+        if(nb_rows != g.getNbRow())
+            nb_rows = g.getNbRow();
+        if(nb_columns != g.getNbCol())
+            nb_columns = g.getNbCol();
+        value=g.value;
+    }
+    return *this;
+}

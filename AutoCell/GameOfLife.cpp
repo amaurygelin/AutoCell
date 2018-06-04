@@ -13,7 +13,7 @@ using namespace std;
 
 void GameOfLife::transition(const Grid& src, Grid& dest) const
 {
-    int nb_neighbours_alive(0);
+    unsigned int nb_neighbours_alive(0);
     if( (src.getNbRow() != dest.getNbRow()) || (src.getNbCol() != dest.getNbCol()) )
     {
         throw "Grids with different number of columns and/or number of rows";
@@ -26,30 +26,29 @@ void GameOfLife::transition(const Grid& src, Grid& dest) const
 
             if(j-1>=0) //if there is a neighbour on the left
                 if(src.getCell(i,j-1)) //if he is alive
-                    {nb_neighbours_alive++; cout << "true left" << endl;}
+                    nb_neighbours_alive++;
             if(j+1<=src.getNbCol()-1)
                 if(src.getCell(i,j+1)) //right
-                    {nb_neighbours_alive++; cout << "true right" << endl;}
+                    nb_neighbours_alive++;
             if(i-1>=0)
                 if(src.getCell(i-1,j)) //top
-                    {nb_neighbours_alive++; cout << "true top" << endl;}
+                    nb_neighbours_alive++;
             if(i+1<=src.getNbRow()-1)
                 if(src.getCell(i+1,j)) //bottom
-                    {nb_neighbours_alive++; cout << "true bottom" << endl;}
+                    nb_neighbours_alive++;
             if(i-1>=0 && j-1>=0)
                 if(src.getCell(i-1,j-1)) //top left corner
-                    {nb_neighbours_alive++; cout << "true tlc" << endl;}
+                    nb_neighbours_alive++;
             if(i-1>=0 && j+1<=src.getNbCol()-1)
                 if(src.getCell(i-1,j+1)) //top right corner
-                    {nb_neighbours_alive++; cout << "true trc" << endl;}
+                    nb_neighbours_alive++;
             if(i+1<=src.getNbRow()-1 && j-1>=0)
                 if(src.getCell(i+1,j-1)) //bottom left corner
-                    {nb_neighbours_alive++; cout << "true blc" << endl;}
+                    nb_neighbours_alive++;
             if(i+1<=src.getNbRow()-1 && j+1<=src.getNbCol()-1)
                 if(src.getCell(i+1,j+1)) //bottom right corner
-                    {nb_neighbours_alive++; cout << "true brc" << endl;}
+                    nb_neighbours_alive++;
 
-            printf("cellule[%d,%d] - %d neighbours alive \n",i,j,nb_neighbours_alive);
             if(src.getCell(i,j)) //if the current cell is alive
             {
                 if(nb_neighbours_alive>=min_neighbours_to_stay_alive && nb_neighbours_alive<=max_neighbours_to_stay_alive)

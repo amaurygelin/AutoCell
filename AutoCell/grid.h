@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-class GridGenerator; // Forward decleration
+class GridGenerator; // Forward declaration
 
 class Grid{
     unsigned int nb_rows;
@@ -13,13 +13,14 @@ class Grid{
     unsigned int nb_possible_states;
 public:
     Grid(unsigned int nb_r, unsigned int nb_c, unsigned int nb_s):nb_rows(nb_r),nb_columns(nb_c),value(nb_rows,std::vector<int>(nb_columns)),nb_possible_states(nb_s){}
-    Grid(const Grid& g):nb_rows(g.nb_rows),nb_columns(g.nb_columns),value(nb_rows,std::vector<int>(nb_columns)),nb_possible_states(g.nb_possible_states){}
+    Grid(const Grid& g):nb_rows(g.nb_rows),nb_columns(g.nb_columns),value(g.value),nb_possible_states(g.nb_possible_states){}
     void executeGridGenerator(GridGenerator& generation_strategy);
     unsigned int getNbRow() const { return nb_rows; }
     unsigned int getNbCol() const { return nb_columns; }
     unsigned int getNbPossibleStates() const { return nb_possible_states; }
     void setCell(unsigned int i,unsigned int j,int val);
     unsigned int getCell(unsigned int i,unsigned int j) const;
+    Grid& operator=(const Grid & g);
 };
 
 #endif // GRID_H_INCLUDED

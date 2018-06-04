@@ -94,3 +94,187 @@
 1528025411 c:\users\amaur\documents\utc\p18\uvs\lo21\projet\autocell\symmetricvgridgenerator.h
 	"GridGenerator.h"
 
+1528032213 source:c:\users\wael_\desktop\autocell\autocell\abstractgameoflife.cpp
+	<iostream>
+	"AbstractGameOfLife.h"
+
+1528032213 c:\users\wael_\desktop\autocell\autocell\abstractgameoflife.h
+	"Automaton.h"
+
+1528032213 c:\users\wael_\desktop\autocell\autocell\automaton.h
+	<iostream>
+	"Grid.h"
+
+1528042020 c:\users\wael_\desktop\autocell\autocell\grid.h
+	<iostream>
+	<vector>
+
+1528032213 source:c:\users\wael_\desktop\autocell\autocell\automaton.cpp
+	<iostream>
+	"Automaton.h"
+
+1528032213 source:c:\users\wael_\desktop\autocell\autocell\elementaryautomaton.cpp
+	<iostream>
+	"ElementaryAutomaton.h"
+
+1528032213 c:\users\wael_\desktop\autocell\autocell\elementaryautomaton.h
+	<string>
+	"Automaton.h"
+
+1528032213 source:c:\users\wael_\desktop\autocell\autocell\gameoflife.cpp
+	<iostream>
+	"GameOfLife.h"
+
+1528032213 c:\users\wael_\desktop\autocell\autocell\gameoflife.h
+	"AbstractGameOfLife.h"
+
+1528046307 source:c:\users\wael_\desktop\autocell\autocell\main.cpp
+	<iostream>
+	"Automaton.h"
+	"ElementaryAutomaton.h"
+	"GameOfLife.h"
+	"grid.h"
+	"randomGridGenerator.h"
+	"simulator.h"
+
+1528032213 c:\users\wael_\desktop\autocell\autocell\randomgridgenerator.h
+	"GridGenerator.h"
+
+1528032213 c:\users\wael_\desktop\autocell\autocell\gridgenerator.h
+	"grid.h"
+
+1528032213 source:c:\users\wael_\desktop\autocell\autocell\quadlife.cpp
+	<iostream>
+	"QuadLife.h"
+
+1528032213 c:\users\wael_\desktop\autocell\autocell\quadlife.h
+	"AbstractGameOfLife.h"
+
+1528032213 source:c:\users\wael_\desktop\autocell\autocell\randomgridgenerator.cpp
+	"randomGridGenerator.h"
+	"stdlib.h"
+	<time.h>
+
+1528032213 source:c:\users\wael_\desktop\autocell\autocell\symmetricdgridgenerator.cpp
+	"symmetricDGridGenerator.h"
+	"stdlib.h"
+
+1528032213 c:\users\wael_\desktop\autocell\autocell\symmetricdgridgenerator.h
+	"GridGenerator.h"
+
+1528032213 source:c:\users\wael_\desktop\autocell\autocell\symmetrichgridgenerator.cpp
+	"symmetricHGridGenerator.h"
+	"stdlib.h"
+
+1528032213 c:\users\wael_\desktop\autocell\autocell\symmetrichgridgenerator.h
+	"GridGenerator.h"
+
+1528032213 source:c:\users\wael_\desktop\autocell\autocell\symmetricvgridgenerator.cpp
+	"symmetricVGridGenerator.h"
+	"stdlib.h"
+
+1528032213 c:\users\wael_\desktop\autocell\autocell\symmetricvgridgenerator.h
+	"GridGenerator.h"
+
+1528037741 source:c:\users\wael_\desktop\autocell\autocell\grid.cpp
+	"gridGenerator.h"
+
+1528041305 source:c:\users\wael_\desktop\autocell\autocell\simulator.cpp
+	"Simulator.h"
+
+1528040002 c:\users\wael_\desktop\autocell\autocell\simulator.h
+	"Grid.h"
+	"Automaton.h"
+
+1528032213 source:c:\users\amaur\documents\autocell\autocell\abstractgameoflife.cpp
+	<iostream>
+	"AbstractGameOfLife.h"
+
+1528032213 c:\users\amaur\documents\autocell\autocell\abstractgameoflife.h
+	"Automaton.h"
+
+1528032213 c:\users\amaur\documents\autocell\autocell\automaton.h
+	<iostream>
+	"Grid.h"
+
+1528042020 c:\users\amaur\documents\autocell\autocell\grid.h
+	<iostream>
+	<vector>
+
+1528032213 source:c:\users\amaur\documents\autocell\autocell\automaton.cpp
+	<iostream>
+	"Automaton.h"
+
+1528032213 source:c:\users\amaur\documents\autocell\autocell\elementaryautomaton.cpp
+	<iostream>
+	"ElementaryAutomaton.h"
+
+1528032213 c:\users\amaur\documents\autocell\autocell\elementaryautomaton.h
+	<string>
+	"Automaton.h"
+
+1528137992 source:c:\users\amaur\documents\autocell\autocell\gameoflife.cpp
+	<iostream>
+	"GameOfLife.h"
+
+1528032213 c:\users\amaur\documents\autocell\autocell\gameoflife.h
+	"AbstractGameOfLife.h"
+
+1528037741 source:c:\users\amaur\documents\autocell\autocell\grid.cpp
+	"gridGenerator.h"
+
+1528032213 c:\users\amaur\documents\autocell\autocell\gridgenerator.h
+	"grid.h"
+
+1528137787 source:c:\users\amaur\documents\autocell\autocell\main.cpp
+	<iostream>
+	"Automaton.h"
+	"ElementaryAutomaton.h"
+	"GameOfLife.h"
+	"grid.h"
+	"randomGridGenerator.h"
+	"simulator.h"
+
+1528032213 c:\users\amaur\documents\autocell\autocell\randomgridgenerator.h
+	"GridGenerator.h"
+
+1528040002 c:\users\amaur\documents\autocell\autocell\simulator.h
+	"Grid.h"
+	"Automaton.h"
+
+1528032213 source:c:\users\amaur\documents\autocell\autocell\quadlife.cpp
+	<iostream>
+	"QuadLife.h"
+
+1528032213 c:\users\amaur\documents\autocell\autocell\quadlife.h
+	"AbstractGameOfLife.h"
+
+1528032213 source:c:\users\amaur\documents\autocell\autocell\randomgridgenerator.cpp
+	"randomGridGenerator.h"
+	"stdlib.h"
+	<time.h>
+
+1528041305 source:c:\users\amaur\documents\autocell\autocell\simulator.cpp
+	"Simulator.h"
+
+1528032213 source:c:\users\amaur\documents\autocell\autocell\symmetricdgridgenerator.cpp
+	"symmetricDGridGenerator.h"
+	"stdlib.h"
+
+1528032213 c:\users\amaur\documents\autocell\autocell\symmetricdgridgenerator.h
+	"GridGenerator.h"
+
+1528032213 source:c:\users\amaur\documents\autocell\autocell\symmetrichgridgenerator.cpp
+	"symmetricHGridGenerator.h"
+	"stdlib.h"
+
+1528032213 c:\users\amaur\documents\autocell\autocell\symmetrichgridgenerator.h
+	"GridGenerator.h"
+
+1528032213 source:c:\users\amaur\documents\autocell\autocell\symmetricvgridgenerator.cpp
+	"symmetricVGridGenerator.h"
+	"stdlib.h"
+
+1528032213 c:\users\amaur\documents\autocell\autocell\symmetricvgridgenerator.h
+	"GridGenerator.h"
+

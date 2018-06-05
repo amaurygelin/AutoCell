@@ -1,6 +1,29 @@
 #include "Simulator.h"
 
 
+Simulator* Simulator::uniqueSim=nullptr;
+
+Simulator& Simulator::getSimulator(const Automaton& autom, const Grid& initial_g, unsigned int max_g){
+    if(uniqueSim == nullptr){
+        uniqueSim = new Simulator(autom,initial_g,max_g);
+    }
+    return *uniqueSim;
+}
+
+Simulator& Simulator::getSimulator(const Automaton& autom, unsigned int max_g){
+    if(uniqueSim == nullptr){
+        uniqueSim = new Simulator(autom,max_g);
+    }
+    return *uniqueSim;
+}
+
+void Simulator::freeInstance(){
+    if(uniqueSim != nullptr){
+        delete uniqueSim;
+        uniqueSim = nullptr;
+    }
+}
+
 
 Simulator::Simulator(const Automaton& autom, unsigned int max_g):automaton(autom),max_grids(max_g),grids(max_grids,0){
     for (std::vector<Grid*>::iterator it = grids.begin() ; it != grids.end(); ++it){
@@ -9,6 +32,12 @@ Simulator::Simulator(const Automaton& autom, unsigned int max_g):automaton(autom
 }
 
 Simulator::Simulator(const Automaton& autom, const Grid& initial_g,unsigned int max_g):automaton(autom),initial_grid(&initial_g),max_grids(max_g),grids(max_grids,0),cur_rank(0){
+    if(autom.getDim()==1 && initial_grid->getNbRow()!=1){
+        throw "automaton is 1D but initial_grid is not 1D";
+    }
+    if(autom.getDim()!=1 && initial_grid->getNbRow()==1){
+        throw "automaton is not 1D but initial_grid is 1D";
+    }
     for (std::vector<Grid*>::iterator it = grids.begin() ; it != grids.end(); ++it){
         *it = nullptr;
     }
@@ -39,6 +68,12 @@ void Simulator::reset(){
 }
 
 void Simulator::setInitialGrid(const Grid& grid){
+    if(automaton.getDim()==1 && grid.getNbRow()!=1){
+        throw "automaton is 1D but grid is not 1D";
+    }
+    if(automaton.getDim()!=1 && grid.getNbRow()==1){
+        throw "automaton is not 1D but grid is 1D";
+    }
     initial_grid=&grid;
     reset();
 }

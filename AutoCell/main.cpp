@@ -81,9 +81,9 @@ int main()
         grille.executeGridGenerator(gridGeneratorA);
 
         cout << "Simulation : " << endl;
-        Simulator s(ql,grille,3);
-        s.run(2);
-        s.displayGrids();
+        Simulator* s = &(Simulator::getSimulator(ql,grille,3)); 
+        s->run(2);
+        s->displayGrids();
 
     }
     catch(char const* e)

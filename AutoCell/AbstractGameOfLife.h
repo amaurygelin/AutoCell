@@ -16,6 +16,7 @@ class AbstractGameOfLife: public Automaton{
         std::ostream& display(std::ostream& f = std::cout) const override;
         void setMaxNeighbours(unsigned int max_n) { max_neighbours_to_stay_alive = max_n; }
         void setMinNeighbours(unsigned int min_n) { min_neighbours_to_stay_alive = min_n; }
+        void accept(SaveManager &db) const override{}
 };
 
 unsigned int countNeighboursAlive(const Grid& g, int i, int j);

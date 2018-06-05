@@ -20,6 +20,10 @@ class ElementaryAutomaton final: public Automaton{
         std::string getRuleBits() const {return rule_bits;}
         void transition(const Grid& src, Grid& dest) const override;
         std::ostream& display(std::ostream& f = std::cout) const override;
+        void accept(SaveManager &db) const override
+        {
+            db.saveAutomaton(*this);
+        }
 };
 
 #endif // ELEMENTARYAUTOMATON_H_INCLUDED

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Grid.h"
+#include "saveManager.h"
 
 class Automaton {
     private:
@@ -14,6 +15,7 @@ class Automaton {
         virtual void transition(const Grid& src, Grid& dest) const = 0;
         virtual std::ostream& display(std::ostream& f = std::cout) const; //is abstract but has a definition
         unsigned int getDim() const{return dimension;}
+        virtual void accept(SaveManager &db)const =0;
 };
 
 std::ostream& operator<<(std::ostream& f, Automaton const& a);

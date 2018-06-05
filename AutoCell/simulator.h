@@ -3,6 +3,7 @@
 
 #include "Grid.h"
 #include "Automaton.h"
+#include "saveManager.h"
 
 class Simulator{
     static Simulator* uniqueSim;
@@ -28,6 +29,11 @@ public:
     static Simulator& getSimulator(const Automaton& autom, const Grid& initial_g, unsigned int max_g);
     static Simulator& getSimulator(const Automaton& autom, unsigned int max_g);
     static void freeInstance();
+    void save(SaveManager &s)
+    {
+        automaton.accept(s);
+    }
+
 };
 
 std::ostream & operator<<(std::ostream & f,const Simulator & s);

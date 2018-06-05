@@ -13,40 +13,61 @@ int main()
 {
     try
     {
-        /*ElementaryAutomaton ea(30);
+        /*
+        ElementaryAutomaton ea(30);
         Automaton* pt1 = &ea;
         cout << *pt1 << endl;
 
-        Grid g(1,11,2);
+        Grid g(1,5,2);
         Grid& grille = g;
         Grid& grille_dest = g;
-        cout << "Grille init" << endl;
         cout << grille << endl;
-        g.setCell(0,5,1);
-        cout << g << endl;
+
+
+        RandomGridGenerator gridGeneratorA;
+        grille.executeGridGenerator(gridGeneratorA);
+        cout << grille << endl;
+
+        ea.transition(grille, grille_dest);
+        cout << grille << endl;
+
 
         cout << "Simulator" << endl;
-        Simulator s(ea,g,5);
-        s.run(4);
-        s.displayGrids();*/
+
+        Simulator* s = &(Simulator::getSimulator(ea,g,3));
+        s->run(2);
+        s->displayGrids();
 
 
-        /*GameOfLife gol(3,2,3);
+        */
+
+        /*
+        GameOfLife gol(3,2,3);
         Automaton* pt2 = &gol;
         cout << *pt2 << endl;
 
-        Grid g(3,3,2);
+
+        Grid g(6,6,3);
         Grid& grille = g;
         Grid& grille_dest = g;
-        cout << "Grille init" << endl;
-        cout << grille << endl;
+        //cout << grille << endl;
         RandomGridGenerator gridGeneratorA;
         grille.executeGridGenerator(gridGeneratorA);
+        //cout << grille << endl;
+        gol.transition(grille, grille_dest);
+        cout << grille << endl;
 
-        cout << "Simulation : " << endl;
-        Simulator s(gol,grille,3);
-        s.run(2);
-        s.displayGrids();*/
+
+        Simulator* s = &(Simulator::getSimulator(gol,g,3));
+        s->run(4);
+        s->displayGrids();
+
+        Simulator* s1 = &(Simulator::getSimulator(gol,3));
+        s1->setInitialGrid(g);
+        s1->run(4);
+        s1->displayGrids();
+
+        */
 
 
         QuadLife ql(3,2,3);

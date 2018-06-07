@@ -19,7 +19,6 @@ class SaveManager
         virtual void saveAutomaton(const ElementaryAutomaton &a) const=0;
         virtual void saveAutomaton(const GameOfLife &a) const=0;
         virtual void saveAutomaton(const QuadLife &a) const=0;
-        //void chargementAutomate();
 };
 
 #endif // SAVEMANAGER_H

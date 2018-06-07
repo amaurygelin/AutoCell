@@ -15,7 +15,6 @@ class Automaton {
         virtual void transition(const Grid& src, Grid& dest) const = 0;
         virtual std::ostream& display(std::ostream& f = std::cout) const; //is abstract but has a definition
         virtual unsigned int getDim() const{return dimension;}
-        virtual unsigned int getNbStates() const{return nb_states;}
         virtual void accept(SaveManager &db)const =0;
 };
 

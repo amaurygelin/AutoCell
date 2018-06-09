@@ -19,7 +19,7 @@
 class DbManager final:public SaveManager
 {
     private:
-        QSqlDatabase db; ///Une base de données SQLite
+        QSqlDatabase db; ///<Une base de données SQLite.
     public:
         /// \brief Constructeur.
         ///

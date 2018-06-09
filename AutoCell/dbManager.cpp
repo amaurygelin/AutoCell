@@ -1,7 +1,9 @@
 #include "dbManager.h"
 #include <iostream>
 #include <QString>
-
+#include "ElementaryAutomaton.h"
+#include "GameOfLife.h"
+#include "QuadLife.h"
 
 DbManager::DbManager(): SaveManager()
 {

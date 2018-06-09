@@ -3,81 +3,67 @@
 
 using namespace std;
 
-void QuadLife::born(Grid& g, int i, int j) const
+void QuadLife::lifeManager(const Grid& src, Grid& dest, int i, int j) const
 {
-    vector<unsigned int> states_neighbours(8,0);
-    unsigned int state_cell;
+    int nb_neighbours_alive[4]; //Contains the 4 different alive states (1, 2 and 3)
+    int sum_neighbours_alive=0; //Number of alive cells
+    int current_state = src.getCell(i,j); //Current state of the cell
 
-    //order of the neighbours : top left, top, top right, left, right, bottom left, bottom, bottom right
-    if(j-1>=0)
-        if(state_cell = g.getCell(i,j-1)) //left
-            {states_neighbours[3] = state_cell; cout << "true";}
-    if(j+1<=g.getNbCol()-1)
-        if(state_cell = g.getCell(i,j+1)) //right
-            {states_neighbours[4] = state_cell; cout << "true";}
-    if(i-1>=0)
-        if(state_cell = g.getCell(i-1,j)) //top
-            {states_neighbours[1] = state_cell; cout << "true";}
-    if(i+1<=g.getNbRow()-1)
-        if(state_cell = g.getCell(i+1,j)) //bottom
-            {states_neighbours[6] = state_cell; cout << "true";}
-    if(i-1>=0 && j-1>=0)
-        if(state_cell = g.getCell(i-1,j-1)) //top left corner
-            {states_neighbours[0] = state_cell; cout << "true";}
-    if(i-1>=0 && j+1<=g.getNbCol()-1)
-        if(state_cell = g.getCell(i-1,j+1)) //top right corner
-            {states_neighbours[2] = state_cell; cout << "true";}
-    if(i+1<=g.getNbRow()-1 && j-1>=0)
-        if(state_cell = g.getCell(i+1,j-1)) //bottom left corner
-            {states_neighbours[5] = state_cell; cout << "true";}
-    if(i+1<=g.getNbRow()-1 && j+1<=g.getNbCol()-1)
-        if(state_cell = g.getCell(i+1,j+1)) //bottom right corner
-            {states_neighbours[7] = state_cell; cout << "true";}
+    nb_neighbours_alive[0]=countNeighboursAlive(src,i,j,1);
+    nb_neighbours_alive[1]=countNeighboursAlive(src,i,j,2);
+    nb_neighbours_alive[2]=countNeighboursAlive(src,i,j,3);
+    nb_neighbours_alive[3]=countNeighboursAlive(src,i,j,4);
 
-    unsigned int a(0),b(0),c(0); //the states of the three neighbours that allowed the birth
-    unsigned int counter(0);
-
-    /*for(int k=0;k<7;k++)
+    for(unsigned int k=0; k<4; ++k)
     {
-        cout << states_neighbours[k] << endl;
-    }*/
-
-    while(states_neighbours[counter]==0)
-    {
-        counter++;
+        sum_neighbours_alive = sum_neighbours_alive + nb_neighbours_alive[k];
     }
-    a = states_neighbours[counter++];
-    while(states_neighbours[counter]==0)
+    if(current_state != 0) //if the current cell is alive
     {
-        counter++;
+        if(sum_neighbours_alive>=min_neighbours_to_stay_alive && sum_neighbours_alive<=max_neighbours_to_stay_alive)
+            //stay alive
+            dest.setCell(i,j,current_state);
+        else
+            //die
+            dest.setCell(i,j,0);
     }
-    b = states_neighbours[counter++];
-    while(states_neighbours[counter]==0)
+    else
     {
-        counter++;
-    }
-    c = states_neighbours[counter];
-
-    /*cout << "a = " << a << endl;
-    cout << "b = " << a << endl;
-    cout << "c = " << a << endl;*/
-    if(a!=b && a!=c && c!=b) //if every states states are different, the 4th other state is chosen
-    {
-        state_cell = 1;
-        while(state_cell==a || state_cell==b || state_cell==c)
-        {
-            state_cell++;
-        }
-        g.setCell(i,j,state_cell);
-    }
-    else //if some states are the same, the most viewed one is chosen
-    {
-        if(a==b)
-            state_cell=a;
-        else if(a==c)
-            state_cell=a;
-        else if(b==c)
-            state_cell=b;
-        g.setCell(i,j,state_cell);
+            if(sum_neighbours_alive==nb_neighbours_to_born)
+            {
+                if((nb_neighbours_alive[0] >= 1) && (nb_neighbours_alive[1] >= 1) && (nb_neighbours_alive[2] >= 1) && (nb_neighbours_alive[3] >= 1)) //Each neighbour has a different state
+                {
+                    for(unsigned int k=0; k<4; ++k)
+                    {
+                        if(nb_neighbours_alive[k] == 0) //The cell takes the value of the state which is not present
+                        {
+                            dest.setCell(i,j,k+1);
+                            break;
+                        }
+                    }
+                }
+                else // Here the cell take the value of the most present state among the neighbours
+                {
+                    if((nb_neighbours_alive[0] > nb_neighbours_alive[1]) && (nb_neighbours_alive[0] > nb_neighbours_alive[2]) && (nb_neighbours_alive[0] > nb_neighbours_alive[3]))
+                    {
+                        dest.setCell(i,j,1);
+                    }
+                    else if((nb_neighbours_alive[1] > nb_neighbours_alive[0]) && (nb_neighbours_alive[1] > nb_neighbours_alive[2]) && (nb_neighbours_alive[1] > nb_neighbours_alive[3]))
+                    {
+                        dest.setCell(i,j,2);
+                    }
+                    else if((nb_neighbours_alive[2] > nb_neighbours_alive[0]) && (nb_neighbours_alive[2] > nb_neighbours_alive[1]) && (nb_neighbours_alive[2] > nb_neighbours_alive[3]))
+                    {
+                        dest.setCell(i,j,3);
+                    }
+                    else if((nb_neighbours_alive[3] > nb_neighbours_alive[0]) && (nb_neighbours_alive[3] > nb_neighbours_alive[1]) && (nb_neighbours_alive[3] > nb_neighbours_alive[2]))
+                    {
+                        dest.setCell(i,j,4);
+                    }
+                }
+            }
+            else
+                //stay dead
+                dest.setCell(i,j,0);
     }
 }

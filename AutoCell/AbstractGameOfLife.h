@@ -35,7 +35,7 @@ class AbstractGameOfLife: public Automaton{
         AbstractGameOfLife(unsigned int dim, unsigned int nb_s, unsigned int nb_n, unsigned int min_n, unsigned int max_n);
         /// \brief Transition d'un état à un autre.
         ///
-        /// Prépare la transition d'un état à un autre.
+        /// Prépare la transition d'un état à un autre (patron de conception patron de méthode implanté dans la méthode sous la forme de lifeManager).
         /// \param src : grille contenant l'état actuel de l'automate.
         /// \param dest : grille qui contiendra l'état suivant de l'automate.
         void transition(const Grid& src, Grid& dest) const override; //template method
@@ -45,19 +45,19 @@ class AbstractGameOfLife: public Automaton{
         /// \param f : flux ostream.
         std::ostream& display(std::ostream& f = std::cout) const override;
         /// \brief Paramètrage du nombre maximum de voisins pour rester en vie.
-        /// \param max_n : le nombre en question.
+        /// \param max_n : nombre maximum de voisins pour rester en vie.
         void setMaxNeighbours(unsigned int max_n) { max_neighbours_to_stay_alive = max_n; }
         /// \brief Paramètrage du nombre minimum de voisins pour rester en vie.
-        /// \param min_n : le nombre en question.
+        /// \param min_n : nombre minimum de voisins pour rester en vie.
         void setMinNeighbours(unsigned int min_n) { min_neighbours_to_stay_alive = min_n; }
         /// \brief Récupération du nombre de voisins vivants nécéssaires pour naître.
-        /// \return Le nombre en question.
+        /// \return Nombre de voisins vivants nécéssaires pour naître.
         virtual unsigned int getNbNeighboursToBorn() const {return nb_neighbours_to_born;}
         /// \brief Récupération du nombre de voisins vivants minimum pour rester en vie.
-        /// \return Le nombre en question.
+        /// \return Nombre de voisins vivants minimum pour rester en vie.
         virtual unsigned int getMinNeighboursToStayAlive() const {return min_neighbours_to_stay_alive;}
         /// \brief Récupération du nombre de voisins vivants maximum pour rester en vie.
-        /// \return Le nombre en question.
+        /// \return Nombre de voisins vivants maximum pour rester en vie.
         virtual unsigned int getMaxNeighboursToStayAlive() const {return max_neighbours_to_stay_alive;}
         /// \brief Acceptation d'un visiteur.
         ///

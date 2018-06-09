@@ -90,7 +90,7 @@ int main(int argc, char* argv[])
 
         QuadLife ql(3,2,3);
 
-        Grid g(5,5,5);
+        Grid g(10,10,5);
         Grid& grille = g;
 
         RandomGridGenerator gridGeneratorA;
@@ -98,11 +98,11 @@ int main(int argc, char* argv[])
 
         cout << "Simulation : " << endl;
 
-        Simulator* s = &Simulator::getSimulator(ql,grille,3);
-        s->run(2);
+        Simulator* s = &(Simulator::getSimulator(ql,grille,6));
+        s->run(5);
         s->displayGrids();
 
-        //s->save(dbTest);
+        s->save(dbTest);
 
     }
     catch(char const* e)

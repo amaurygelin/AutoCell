@@ -7,7 +7,6 @@
 /// \author Amaury
 ///
 
-#include <iostream>
 #include "Grid.h"
 #include "saveManager.h"
 
@@ -38,6 +37,8 @@ class Automaton {
         /// \param f : flux ostream.
         virtual std::ostream& display(std::ostream& f = std::cout) const; //is abstract but has a definition
         /// \brief Récupération de la dimension.
+        ///
+        /// \return La dimension.
         virtual unsigned int getDim() const{return dimension;}
         /// \brief Acceptation d'un visiteur.
         ///
@@ -48,7 +49,7 @@ class Automaton {
 
 /// \brief Redéfinition de l'opérateur <<.
 ///
-/// Affiche les paramètres de l'automate".
+/// Affiche les paramètres de l'automate.
 /// \param f : flux ostream.
 /// \param a : la classe Automate.
 std::ostream& operator<<(std::ostream& f, Automaton const& a);

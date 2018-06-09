@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
 
 
 
-        QuadLife ql(3,2,3);
+        QuadLife ql;
 
         Grid g(10,10,5);
         Grid& grille = g;

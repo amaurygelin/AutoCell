@@ -14,7 +14,7 @@
 #include <QPushButton>
 #include <QComboBox>
 #include <QString>
-#include "grid.h"
+
 
 class AutoCellElem : public QWidget{
 Q_OBJECT

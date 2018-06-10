@@ -7,7 +7,10 @@
 #include "symmetricHGridGenerator.h"
 #include "symmetricVGridGenerator.h"
 
+
+
 AutoCellElem::AutoCellElem(QWidget *parent) : QWidget(parent) {
+    cur_step=0;
     namel = new QLabel("Elementary automaton", this);
 
     num = new QSpinBox(this);
@@ -74,9 +77,14 @@ AutoCellElem::AutoCellElem(QWidget *parent) : QWidget(parent) {
     connect(choice, SIGNAL(currentTextChanged(QString)), this, SLOT(choiceChanged(QString)));
     couche->addWidget(choice);
 
-    simulation = new QPushButton("Simulation !", this);
+    simLayout = new QHBoxLayout;
+    simulation = new QPushButton("Play simulation", this);
     connect(simulation, SIGNAL(clicked()), this, SLOT(launchSimulation()));
-    couche->addWidget(simulation);
+    simLayout->addWidget(simulation);
+    simulationStep = new QPushButton("Simulation step by step", this);
+    connect(simulationStep, SIGNAL(clicked()), this, SLOT(launchSimulationStep()));
+    simLayout->addWidget(simulationStep);
+    couche->addLayout(simLayout);
     setLayout(couche);
 }
 
@@ -100,6 +108,8 @@ void AutoCellElem::newGrid(){
     if(depart!=nullptr){
         delete depart;
     }
+
+    cur_step=0;
 
     depart = new QTableWidget(1, dimension->value(), this); //1 ligne, dimension colonnes
     depart->setFixedSize(dimension->value()*25, 25); // largeur = nombre_cellules*25_cellule, hauteur = 25_cellule
@@ -214,18 +224,46 @@ void AutoCellElem::synchronizeNumBitToNum(const QString& s) {
 }
 
 void AutoCellElem::launchSimulation() {
+    playSimulation=true;
     // création de l'état
-    Grid g(1,dimension->value(),2);
+    Grid grille(1,dimension->value(),2);
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
     for(unsigned int counter =  0; counter < dimension->value(); ++counter) {
         if(depart->item(0, counter)->text() != "") {
-                g.setCell(0,counter,1);
+                grille.setCell(0,counter,1);
         }
     }
 
     ElementaryAutomaton ea(num->value());
     // on construit l'objet simulateur correspondant
-    Simulator* sim = &(Simulator::getSimulator(ea,g,nb_step->value()));
+    if(stepSimulation){
+        Simulator::freeInstance();
+        stepSimulation=false;
+        if(grids!=nullptr){
+            delete grids;
+        }
+        cur_step=0;
+        grids = new QTableWidget(nb_step->value(), dimension->value(), this);
+        grids->setFixedSize(dimension->value()*25,nb_step->value()*25);
+        grids->horizontalHeader()->setVisible(false);
+        grids->verticalHeader()->setVisible(false);
+        grids->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        grids->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        grids->setEditTriggers(QAbstractItemView::NoEditTriggers); // désactive la modification par l'utilisateur
+        // on va créer les items, on utilise 2 boucles car on parcourt un tableau 2 dimensions
+        for(unsigned int ligne = 0; ligne < nb_step->value(); ++ligne) {
+            // fixe les dimensions des lignes et des colonnes
+            grids->setRowHeight(ligne, 25);
+            for(unsigned int colonne = 0; colonne < dimension->value(); ++colonne) {
+                grids->setColumnWidth(colonne, 25);
+                grids->setItem(ligne, colonne, new QTableWidgetItem(""));
+                grids->item(ligne, colonne)->setBackgroundColor("white");
+                grids->item(ligne, colonne)->setTextColor("white");
+            }
+        }
+        couche->addWidget(grids);
+    }
+    Simulator* sim = &(Simulator::getSimulator(ea,grille,nb_step->value()));
 
     // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
     for(unsigned int step = 0; step < nb_step->value(); ++step) {
@@ -245,7 +283,67 @@ void AutoCellElem::launchSimulation() {
                 grids->item(step, colonne)->setTextColor("white");
             }
         }
+        cur_step=(cur_step+1)%nb_step->value();
     }
 }
 
+
+void AutoCellElem::launchSimulationStep() {
+    stepSimulation=true;
+    // création de l'état
+    Grid grille(1,dimension->value(),2);
+    // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
+    for(unsigned int counter =  0; counter < dimension->value(); ++counter) {
+        if(depart->item(0, counter)->text() != "") {
+                grille.setCell(0,counter,1);
+        }
+    }
+    ElementaryAutomaton ea(num->value());
+    // on construit l'objet simulateur correspondant
+    if(playSimulation){
+        Simulator::freeInstance();
+        playSimulation=false;
+        if(grids!=nullptr){
+            delete grids;
+        }
+        cur_step=0;
+        grids = new QTableWidget(nb_step->value(), dimension->value(), this);
+        grids->setFixedSize(dimension->value()*25,nb_step->value()*25);
+        grids->horizontalHeader()->setVisible(false);
+        grids->verticalHeader()->setVisible(false);
+        grids->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        grids->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        grids->setEditTriggers(QAbstractItemView::NoEditTriggers); // désactive la modification par l'utilisateur
+        // on va créer les items, on utilise 2 boucles car on parcourt un tableau 2 dimensions
+        for(unsigned int ligne = 0; ligne < nb_step->value(); ++ligne) {
+            // fixe les dimensions des lignes et des colonnes
+            grids->setRowHeight(ligne, 25);
+            for(unsigned int colonne = 0; colonne < dimension->value(); ++colonne) {
+                grids->setColumnWidth(colonne, 25);
+                grids->setItem(ligne, colonne, new QTableWidgetItem(""));
+                grids->item(ligne, colonne)->setBackgroundColor("white");
+                grids->item(ligne, colonne)->setTextColor("white");
+            }
+        }
+        couche->addWidget(grids);
+    }
+    Simulator* sim = &(Simulator::getSimulator(ea,grille,nb_step->value()));
+    // on applique la transition
+    sim->next();
+    // on récupère le dernier état
+    const Grid& g = sim->last();
+    // on l'affiche
+    for(unsigned int colonne = 0; colonne < dimension->value(); ++colonne) {
+        if (g.getCell(0,colonne) == 1) {
+            grids->item(cur_step, colonne)->setText("_");
+            grids->item(cur_step, colonne)->setBackgroundColor("black");
+            grids->item(cur_step, colonne)->setTextColor("black");
+        } else {
+            grids->item(cur_step, colonne)->setText("");
+            grids->item(cur_step, colonne)->setBackgroundColor("white");
+            grids->item(cur_step, colonne)->setTextColor("white");
+        }
+    }
+    cur_step=(cur_step+1)%nb_step->value();
+}
 

@@ -10,6 +10,9 @@
 #include "simulator.h"
 #include "QuadLife.h"
 #include "dbmanager.h"
+#include "autocellElem.h"
+#include "autocellGol.h"
+#include "autocellquad.h"
 
 using namespace std;
 
@@ -86,7 +89,7 @@ int main(int argc, char* argv[])
         //s1->run(4);
         //s1->displayGrids();*/
 
-
+        /*
 
         QuadLife ql;
 
@@ -103,6 +106,20 @@ int main(int argc, char* argv[])
         s->displayGrids();
 
         s->save(dbTest);
+        
+        QApplication app(argc, argv);
+        */
+            
+        //AutoCellElem fenetreAutomElem;
+        //fenetreAutomElem.show();
+
+        //AutoCellGol fenetreAutomGol;
+        //fenetreAutomGol.show();
+
+        AutoCellQuad fenetreAutomQl;
+        fenetreAutomQl.show();
+
+        return app.exec();
 
     }
     catch(char const* e)

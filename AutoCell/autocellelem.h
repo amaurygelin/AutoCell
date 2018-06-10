@@ -14,6 +14,7 @@
 #include <QPushButton>
 #include <QComboBox>
 #include <QString>
+#include "grid.h"
 
 class AutoCellElem : public QWidget{
 Q_OBJECT
@@ -25,6 +26,7 @@ Q_OBJECT
     QVBoxLayout* numc;
     QVBoxLayout* bitc[8];
     QHBoxLayout* numeroc;
+    QHBoxLayout* simLayout;
     QIntValidator* zeroOneValidator;
     QTableWidget* depart;
     QSpinBox* dimension;
@@ -35,15 +37,21 @@ Q_OBJECT
     QTableWidget* grids;
     QPushButton* grid;
     QPushButton* simulation;
+    QPushButton* simulationStep;
     QComboBox* choice;
 
 public:
     explicit AutoCellElem(QWidget* parent = nullptr);
+private:
+    unsigned int cur_step;
+    bool playSimulation;
+    bool stepSimulation;
 private slots:
     void synchronizeNumToNumBit(int i);
     void synchronizeNumBitToNum(const QString& s);
     void cellActivation(const QModelIndex& index);
     void launchSimulation();
+    void launchSimulationStep();
     void choiceChanged(const QString& s);
     void newGrid();
     void symmetricVGrid();

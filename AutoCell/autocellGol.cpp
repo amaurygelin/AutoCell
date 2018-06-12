@@ -8,6 +8,9 @@
 #include "symmetricVGridGenerator.h"
 
 AutoCellGol::AutoCellGol(QWidget *parent) : QWidget(parent) {
+    stepSimulation=false;
+    playSimulation=false;
+
 
     namel = new QLabel("Game of life", this);
 
@@ -78,21 +81,29 @@ AutoCellGol::AutoCellGol(QWidget *parent) : QWidget(parent) {
     couche->addWidget(choiceGrid);
 
 
-    simulation = new QPushButton("Simulation !", this);
+    simLayout = new QHBoxLayout;
+    simulation = new QPushButton("Play simulation", this);
     connect(simulation, SIGNAL(clicked()), this, SLOT(launchSimulation()));
-    couche->addWidget(simulation);
+    simLayout->addWidget(simulation);
+    simulationStep = new QPushButton("Simulation step by step", this);
+    connect(simulationStep, SIGNAL(clicked()), this, SLOT(launchSimulationStep()));
+    simLayout->addWidget(simulationStep);
+    couche->addLayout(simLayout);
+
     setLayout(couche);
 }
 
 void AutoCellGol::cellActivation(const QModelIndex& index) {
-    if (depart->item(index.row(), index.column())->text() == "") {
-        depart->item(index.row(), index.column())->setText("_");
-        depart->item(index.row(), index.column())->setBackgroundColor("black");
-        depart->item(index.row(), index.column())->setTextColor("black");
-    } else {
-        depart->item(index.row(), index.column())->setText("");
-        depart->item(index.row(), index.column())->setBackgroundColor("white");
-        depart->item(index.row(), index.column())->setTextColor("white");
+    if(stepSimulation==false && playSimulation==false){
+        if (depart->item(index.row(), index.column())->text() == "") {
+            depart->item(index.row(), index.column())->setText("_");
+            depart->item(index.row(), index.column())->setBackgroundColor("black");
+            depart->item(index.row(), index.column())->setTextColor("black");
+        } else {
+            depart->item(index.row(), index.column())->setText("");
+            depart->item(index.row(), index.column())->setBackgroundColor("white");
+            depart->item(index.row(), index.column())->setTextColor("white");
+        }
     }
 }
 
@@ -121,9 +132,16 @@ void AutoCellGol::choiceGridChanged(const QString &s){
 
 
 void AutoCellGol::newGrid(){
+    Simulator::freeInstance();
     if(depart!=nullptr){
         delete depart;
     }
+
+    if(stepSimulation)
+        stepSimulation=false;
+    if(playSimulation)
+        playSimulation=false;
+
     depart = new QTableWidget(dim1->value(), dim2->value(), this); //dim1 lignes, dim2 colonnes
     depart->setFixedSize(dim2->value()*25, dim1->value()*25);
     depart->horizontalHeader()->setVisible(false); // masque le header horizontal
@@ -140,7 +158,7 @@ void AutoCellGol::newGrid(){
             depart->item(counterV, counterH)->setTextColor("white");
         }
     }
-    connect(depart, SIGNAL(doubleClicked(QModelIndex)), this,
+    connect(depart, SIGNAL(clicked(QModelIndex)), this,
             SLOT(cellActivation(QModelIndex)));
     couche->addWidget(depart);
 }
@@ -226,20 +244,26 @@ void AutoCellGol::randomGrid(){
 }
 
 void AutoCellGol::launchSimulation() {
+    playSimulation=true;
+    if(stepSimulation){
+       stepSimulation=false;
+    }
+
     // création de l'état
-    Grid g(dim1->value(),dim2->value(),2);
+    Grid g1(dim1->value(),dim2->value(),2);
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
 
     for(unsigned int i = 0; i < dim1->value(); ++i) {
         for(unsigned int j = 0; j < dim2->value(); ++j) {
             if(depart->item(i,j)->text() != "") {
-                    g.setCell(i,j,1);
+                    g1.setCell(i,j,1);
             }
         }
     }
+    Simulator::freeInstance();
     GameOfLife gol(nb_n->value(),min_n->value(),max_n->value());
     // on construit l'objet simulateur correspondant
-    Simulator* sim = &(Simulator::getSimulator(gol,g,5));
+    Simulator* sim = &(Simulator::getSimulator(gol,g1,nb_step->value()));
 
     // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
     for(unsigned int step = 0; step < nb_step->value(); ++step) {
@@ -264,4 +288,43 @@ void AutoCellGol::launchSimulation() {
     }
 }
 
+void AutoCellGol::launchSimulationStep() {
+    stepSimulation=true;
+    if(playSimulation){
+       playSimulation=false;
+    }
+    // création de l'état
+    Grid g1(dim1->value(),dim2->value(),2);
+    // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
 
+    for(unsigned int i = 0; i < dim1->value(); ++i) {
+        for(unsigned int j = 0; j < dim2->value(); ++j) {
+            if(depart->item(i,j)->text() != "") {
+                    g1.setCell(i,j,1);
+            }
+        }
+    }
+    Simulator::freeInstance();
+    GameOfLife gol(nb_n->value(),min_n->value(),max_n->value());
+    // on construit l'objet simulateur correspondant
+    Simulator* sim = &(Simulator::getSimulator(gol,g1,nb_step->value()));
+
+    // on applique la transition
+    sim->next();
+    // on récupère le dernier état
+    const Grid& g = sim->last();
+    // on l'affiche
+    for(unsigned int i = 0; i < dim1->value(); ++i) {
+        for(unsigned int j = 0; j < dim2->value(); ++j) {
+            if(g.getCell(i,j)== 1){
+                 depart->item(i, j)->setText("_");
+                 depart->item(i, j)->setBackgroundColor("black");
+                 depart->item(i, j)->setTextColor("black");
+             } else {
+                 depart->item(i, j)->setText("");
+                 depart->item(i, j)->setBackgroundColor("white");
+                 depart->item(i, j)->setTextColor("white");
+             }
+        }
+    }
+}

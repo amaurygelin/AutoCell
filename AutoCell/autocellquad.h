@@ -38,13 +38,18 @@ Q_OBJECT
     QComboBox* choiceGrid;
     QVBoxLayout* couche;
     QPushButton* simulation;
-
+    QPushButton* simulationStep;
+    QHBoxLayout* simLayout;
 
 public:
     explicit AutoCellQuad(QWidget* parent = nullptr);
+private:
+    bool playSimulation;
+    bool stepSimulation;
 private slots:
     void cellActivation(const QModelIndex& index);
     void launchSimulation();
+    void launchSimulationStep();
     void choiceGridChanged(const QString &s);
     void newGrid();
     void symmetricDGrid();

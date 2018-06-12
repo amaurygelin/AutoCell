@@ -10,7 +10,11 @@
 
 
 AutoCellElem::AutoCellElem(QWidget *parent) : QWidget(parent) {
+    stepSimulation=false;
+    playSimulation=false;
+
     namel = new QLabel("Elementary automaton", this);
+
 
     num = new QSpinBox(this);
     num->setRange(0, 255);
@@ -88,6 +92,7 @@ AutoCellElem::AutoCellElem(QWidget *parent) : QWidget(parent) {
 }
 
 void AutoCellElem::choiceChanged(const QString& s){
+    Simulator::freeInstance();
     if(s=="Manual filling"){
         this->newGrid();
         return;
@@ -107,8 +112,10 @@ void AutoCellElem::newGrid(){
     if(depart!=nullptr){
         delete depart;
     }
-    stepSimulation=false;
-    playSimulation=false;
+    if(stepSimulation)
+        stepSimulation=false;
+    if(playSimulation)
+        playSimulation=false;
     depart = new QTableWidget(1, dimension->value(), this); //1 ligne, dimension colonnes
     depart->setFixedSize(dimension->value()*25, 25); // largeur = nombre_cellules*25_cellule, hauteur = 25_cellule
     depart->horizontalHeader()->setVisible(false); // masque le header horizontal
@@ -122,7 +129,7 @@ void AutoCellElem::newGrid(){
         depart->item(0, counter)->setBackgroundColor("white");
         depart->item(0, counter)->setTextColor("white");
     }
-    connect(depart, SIGNAL(doubleClicked(QModelIndex)), this,
+    connect(depart, SIGNAL(clicked(QModelIndex)), this,
             SLOT(cellActivation(QModelIndex)));
     couche->addWidget(depart);
 

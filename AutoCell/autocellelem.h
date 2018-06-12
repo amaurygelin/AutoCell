@@ -43,7 +43,6 @@ Q_OBJECT
 public:
     explicit AutoCellElem(QWidget* parent = nullptr);
 private:
-    unsigned int cur_step;
     bool playSimulation;
     bool stepSimulation;
 private slots:

@@ -8,6 +8,8 @@
 #include "symmetricVGridGenerator.h"
 
 AutoCellQuad::AutoCellQuad(QWidget *parent) : QWidget(parent) {
+    stepSimulation=false;
+    playSimulation=false;
 
     namel = new QLabel("Quadlife", this);
 
@@ -78,33 +80,41 @@ AutoCellQuad::AutoCellQuad(QWidget *parent) : QWidget(parent) {
     couche->addWidget(choiceGrid);
 
 
-    simulation = new QPushButton("Simulation !", this);
+    simLayout = new QHBoxLayout;
+    simulation = new QPushButton("Play simulation", this);
     connect(simulation, SIGNAL(clicked()), this, SLOT(launchSimulation()));
-    couche->addWidget(simulation);
+    simLayout->addWidget(simulation);
+    simulationStep = new QPushButton("Simulation step by step", this);
+    connect(simulationStep, SIGNAL(clicked()), this, SLOT(launchSimulationStep()));
+    simLayout->addWidget(simulationStep);
+    couche->addLayout(simLayout);
+
     setLayout(couche);
 }
 
 void AutoCellQuad::cellActivation(const QModelIndex& index) {
-    if(depart->item(index.row(), index.column())->backgroundColor()==Qt::white){
-        depart->item(index.row(), index.column())->setBackgroundColor(Qt::blue);
-        return;
-    }
+    if(stepSimulation==false && playSimulation==false){
+        if(depart->item(index.row(), index.column())->backgroundColor()==Qt::white){
+            depart->item(index.row(), index.column())->setBackgroundColor(Qt::blue);
+            return;
+        }
 
-    if(depart->item(index.row(), index.column())->backgroundColor()==Qt::blue){
-        depart->item(index.row(), index.column())->setBackgroundColor(Qt::red);
-        return;
-    }
-    if(depart->item(index.row(), index.column())->backgroundColor()==Qt::red){
-        depart->item(index.row(), index.column())->setBackgroundColor(Qt::yellow);
-        return;
-    }
-    if(depart->item(index.row(), index.column())->backgroundColor()==Qt::yellow){
-        depart->item(index.row(), index.column())->setBackgroundColor(Qt::green);
-        return;
-    }
-    if(depart->item(index.row(), index.column())->backgroundColor()==Qt::green){
-        depart->item(index.row(), index.column())->setBackgroundColor(Qt::white);
-        return;
+        if(depart->item(index.row(), index.column())->backgroundColor()==Qt::blue){
+            depart->item(index.row(), index.column())->setBackgroundColor(Qt::red);
+            return;
+        }
+        if(depart->item(index.row(), index.column())->backgroundColor()==Qt::red){
+            depart->item(index.row(), index.column())->setBackgroundColor(Qt::yellow);
+            return;
+        }
+        if(depart->item(index.row(), index.column())->backgroundColor()==Qt::yellow){
+            depart->item(index.row(), index.column())->setBackgroundColor(Qt::green);
+            return;
+        }
+        if(depart->item(index.row(), index.column())->backgroundColor()==Qt::green){
+            depart->item(index.row(), index.column())->setBackgroundColor(Qt::white);
+            return;
+        }
     }
 }
 
@@ -133,6 +143,7 @@ void AutoCellQuad::choiceGridChanged(const QString &s){
 
 
 void AutoCellQuad::newGrid(){
+    Simulator::freeInstance();
     if(depart!=nullptr){
         delete depart;
     }
@@ -262,6 +273,11 @@ void AutoCellQuad::randomGrid(){
 }
 
 void AutoCellQuad::launchSimulation() {
+    playSimulation=true;
+    if(stepSimulation){
+       stepSimulation=false;
+    }
+
     // création de l'état
     Grid g(dim1->value(),dim2->value(),5);
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
@@ -285,6 +301,7 @@ void AutoCellQuad::launchSimulation() {
             }
         }
     }
+    Simulator::freeInstance();
     QuadLife ql(nb_n->value(),min_n->value(),max_n->value());
     // on construit l'objet simulateur correspondant
     Simulator* sim = &(Simulator::getSimulator(ql,g,5));
@@ -319,3 +336,63 @@ void AutoCellQuad::launchSimulation() {
 }
 
 
+void AutoCellQuad::launchSimulationStep() {
+    playSimulation=true;
+    if(stepSimulation){
+       stepSimulation=false;
+    }
+
+    // création de l'état
+    Grid g1(dim1->value(),dim2->value(),5);
+    // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
+
+    for(unsigned int i = 0; i < dim1->value(); ++i) {
+        for(unsigned int j = 0; j < dim2->value(); ++j) {
+            if(depart->item(i,j)->backgroundColor()==Qt::white){
+                    g1.setCell(i,j,0);
+            }
+            if(depart->item(i,j)->backgroundColor()==Qt::blue){
+                    g1.setCell(i,j,1);
+            }
+            if(depart->item(i,j)->backgroundColor()==Qt::red){
+                    g1.setCell(i,j,2);
+            }
+            if(depart->item(i,j)->backgroundColor()==Qt::yellow){
+                    g1.setCell(i,j,3);
+            }
+            if(depart->item(i,j)->backgroundColor()==Qt::green){
+                    g1.setCell(i,j,4);
+            }
+        }
+    }
+    Simulator::freeInstance();
+    QuadLife ql(nb_n->value(),min_n->value(),max_n->value());
+    // on construit l'objet simulateur correspondant
+    Simulator* sim = &(Simulator::getSimulator(ql,g1,nb_step->value()));
+
+
+    // on applique la transition
+    sim->next();
+    // on récupère le dernier état
+    const Grid& g = sim->last();
+    // on l'affiche
+    for(unsigned int i = 0; i < dim1->value(); ++i) {
+        for(unsigned int j = 0; j < dim2->value(); ++j) {
+            if(g.getCell(i,j)== 0){
+                 depart->item(i, j)->setBackgroundColor(Qt::white);
+            }
+            if(g.getCell(i,j)== 1){
+                 depart->item(i, j)->setBackgroundColor(Qt::blue);
+            }
+            if(g.getCell(i,j)== 2){
+                 depart->item(i, j)->setBackgroundColor(Qt::red);
+            }
+            if(g.getCell(i,j)== 3){
+                 depart->item(i, j)->setBackgroundColor(Qt::yellow);
+            }
+            if(g.getCell(i,j)== 4){
+                 depart->item(i, j)->setBackgroundColor(Qt::green);
+            }
+        }
+    }
+}

@@ -10,7 +10,6 @@
 
 
 AutoCellElem::AutoCellElem(QWidget *parent) : QWidget(parent) {
-    cur_step=0;
     namel = new QLabel("Elementary automaton", this);
 
     num = new QSpinBox(this);
@@ -108,9 +107,8 @@ void AutoCellElem::newGrid(){
     if(depart!=nullptr){
         delete depart;
     }
-
-    cur_step=0;
-
+    stepSimulation=false;
+    playSimulation=false;
     depart = new QTableWidget(1, dimension->value(), this); //1 ligne, dimension colonnes
     depart->setFixedSize(dimension->value()*25, 25); // largeur = nombre_cellules*25_cellule, hauteur = 25_cellule
     depart->horizontalHeader()->setVisible(false); // masque le header horizontal
@@ -194,14 +192,16 @@ void AutoCellElem::randomGrid(){
 }
 
 void AutoCellElem::cellActivation(const QModelIndex& index) {
-    if (depart->item(0, index.column())->text() == "") {
-        depart->item(0, index.column())->setText("_");
-        depart->item(0, index.column())->setBackgroundColor("black");
-        depart->item(0, index.column())->setTextColor("black");
-    } else {
-        depart->item(0, index.column())->setText("");
-        depart->item(0, index.column())->setBackgroundColor("white");
-        depart->item(0, index.column())->setTextColor("white");
+    if(stepSimulation==false && playSimulation==false){
+        if (depart->item(0, index.column())->text() == "") {
+            depart->item(0, index.column())->setText("_");
+            depart->item(0, index.column())->setBackgroundColor("black");
+            depart->item(0, index.column())->setTextColor("black");
+        } else {
+            depart->item(0, index.column())->setText("");
+            depart->item(0, index.column())->setBackgroundColor("white");
+            depart->item(0, index.column())->setTextColor("white");
+        }
     }
 }
 
@@ -242,7 +242,7 @@ void AutoCellElem::launchSimulation() {
         if(grids!=nullptr){
             delete grids;
         }
-        cur_step=0;
+
         grids = new QTableWidget(nb_step->value(), dimension->value(), this);
         grids->setFixedSize(dimension->value()*25,nb_step->value()*25);
         grids->horizontalHeader()->setVisible(false);
@@ -283,7 +283,6 @@ void AutoCellElem::launchSimulation() {
                 grids->item(step, colonne)->setTextColor("white");
             }
         }
-        cur_step=(cur_step+1)%nb_step->value();
     }
 }
 
@@ -306,7 +305,6 @@ void AutoCellElem::launchSimulationStep() {
         if(grids!=nullptr){
             delete grids;
         }
-        cur_step=0;
         grids = new QTableWidget(nb_step->value(), dimension->value(), this);
         grids->setFixedSize(dimension->value()*25,nb_step->value()*25);
         grids->horizontalHeader()->setVisible(false);
@@ -335,15 +333,14 @@ void AutoCellElem::launchSimulationStep() {
     // on l'affiche
     for(unsigned int colonne = 0; colonne < dimension->value(); ++colonne) {
         if (g.getCell(0,colonne) == 1) {
-            grids->item(cur_step, colonne)->setText("_");
-            grids->item(cur_step, colonne)->setBackgroundColor("black");
-            grids->item(cur_step, colonne)->setTextColor("black");
+            grids->item((sim->getCurRank()-1)%nb_step->value(), colonne)->setText("_");
+            grids->item((sim->getCurRank()-1)%nb_step->value(), colonne)->setBackgroundColor("black");
+            grids->item((sim->getCurRank()-1)%nb_step->value(), colonne)->setTextColor("black");
         } else {
-            grids->item(cur_step, colonne)->setText("");
-            grids->item(cur_step, colonne)->setBackgroundColor("white");
-            grids->item(cur_step, colonne)->setTextColor("white");
+            grids->item((sim->getCurRank()-1)%nb_step->value(), colonne)->setText("");
+            grids->item((sim->getCurRank()-1)%nb_step->value(), colonne)->setBackgroundColor("white");
+            grids->item((sim->getCurRank()-1)%nb_step->value(), colonne)->setTextColor("white");
         }
     }
-    cur_step=(cur_step+1)%nb_step->value();
 }
 

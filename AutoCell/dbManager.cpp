@@ -28,24 +28,23 @@ DbManager::~DbManager()
 void DbManager::createTables() const
 {
     QSqlQuery query;
-    query.exec("CREATE TABLE automaton_simple("
-        "num INTEGER PRIMARY KEY,"
-        "rule_num INTEGER NOT NULL)");
+    query.exec("CREATE TABLE automaton_elementary("
+        "rule_num INTEGER NOT NULL,"
+        "PRIMARY KEY(rule_num))");
     query.exec("CREATE TABLE automaton_life("
-        "num INTEGER PRIMARY KEY,"
         "nb_neighbours_born INTEGER NOT NULL,"
         "min_neighbours_alive INTEGER NOT NULL,"
-        "max_neighbours_alive INTEGER NOT NULL)");
+        "max_neighbours_alive INTEGER NOT NULL,"
+        "PRIMARY KEY(nb_neighbours_born,min_neighbours_alive,max_neighbours_alive))");
     query.exec("CREATE TABLE automaton_quadlife("
-        "num INTEGER PRIMARY KEY,"
-        "nb_neighbours_born INTEGER NOT NULL,"
         "min_neighbours_alive INTEGER NOT NULL,"
-        "max_neighbours_alive INTEGER NOT NULL)");
+        "max_neighbours_alive INTEGER NOT NULL,"
+        "PRIMARY KEY(min_neighbours_alive,max_neighbours_alive))");
 }
 
 void DbManager::saveAutomaton(const ElementaryAutomaton & a) const {
     QSqlQuery query;
-    query.prepare("INSERT INTO automaton_simple (rule_num) "
+    query.prepare("INSERT INTO automaton_elementary (rule_num) "
                   "VALUES (:rule_num)");
     query.bindValue(":rule_num", a.getRuleNum());
     query.exec();
@@ -63,9 +62,8 @@ void DbManager::saveAutomaton(const GameOfLife & a) const {
 
 void DbManager::saveAutomaton(const QuadLife & a) const {
     QSqlQuery query;
-    query.prepare("INSERT INTO automaton_quadlife (nb_neighbours_born, min_neighbours_alive, max_neighbours_alive) "
-                    "VALUES (:nb_neighbours_born, :min_neighbours_alive, :max_neighbours_alive)");
-    query.bindValue(":nb_neighbours_born", a.getNbNeighboursToBorn());
+    query.prepare("INSERT INTO automaton_quadlife (min_neighbours_alive, max_neighbours_alive) "
+                    "VALUES (:min_neighbours_alive, :max_neighbours_alive)");
     query.bindValue(":min_neighbours_alive", a.getMinNeighboursToStayAlive());
     query.bindValue(":max_neighbours_alive", a.getMaxNeighboursToStayAlive());
     query.exec();
@@ -75,7 +73,7 @@ QSqlQuery DbManager::loadElementaryAutomaton() const
 {
     QSqlQuery query;
     query.prepare("SELECT rule_num "
-                  "FROM automaton_simple");
+                  "FROM automaton_elementary");
     query.exec();
     return query;
 }
@@ -90,7 +88,7 @@ QSqlQuery DbManager::loadLifeAutomaton() const
 QSqlQuery DbManager::loadQuadLifeAutomaton() const
 {
     QSqlQuery query;
-    query.prepare("SELECT nb_neighbours_born, min_neighbours_alive, max_neighbours_alive "
+    query.prepare("SELECT min_neighbours_alive, max_neighbours_alive "
                   "FROM automaton_quadlife");
     query.exec();
     return query;

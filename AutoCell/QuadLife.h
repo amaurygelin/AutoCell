@@ -26,7 +26,7 @@ class QuadLife final: public AbstractGameOfLife{
         /// \brief Constructeur.
         ///
         /// Construit l'automate quadife.
-        QuadLife() : AbstractGameOfLife(2, 5, 3, 2, 3) {}
+        QuadLife(unsigned int min_n, unsigned int max_n) : AbstractGameOfLife(2, 5, 3, min_n, max_n) {}
         /// \brief Acceptation d'un visiteur.
         ///
         /// Permet à la classe SaveManager de visiter cette classe. Implémentation du patron de conception visiteur.

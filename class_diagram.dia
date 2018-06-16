@@ -398,7 +398,7 @@
             <dia:string>#getDim#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
-            <dia:string>#virtual#</dia:string>
+            <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>#unsigned int#</dia:string>
@@ -4491,7 +4491,7 @@
             <dia:string>#void#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
-            <dia:enum val="1"/>
+            <dia:enum val="2"/>
           </dia:attribute>
           <dia:attribute name="comment">
             <dia:string>##</dia:string>
@@ -4909,7 +4909,7 @@
             <dia:string>#getNbNeighboursToBorn#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
-            <dia:string>#abstract#</dia:string>
+            <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>#unsigned int#</dia:string>
@@ -4939,7 +4939,7 @@
             <dia:string>#getMinNeighboursToStayAlive#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
-            <dia:string>#abstract#</dia:string>
+            <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>#unsigned int#</dia:string>
@@ -4969,7 +4969,7 @@
             <dia:string>#getMaxNeighboursToStayAlive#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
-            <dia:string>#abstract#</dia:string>
+            <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>#unsigned int#</dia:string>

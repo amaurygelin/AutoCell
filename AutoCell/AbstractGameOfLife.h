@@ -52,13 +52,13 @@ class AbstractGameOfLife: public Automaton{
         void setMinNeighbours(unsigned int min_n) { min_neighbours_to_stay_alive = min_n; }
         /// \brief Récupération du nombre de voisins vivants nécéssaires pour naître.
         /// \return Nombre de voisins vivants nécéssaires pour naître.
-        virtual unsigned int getNbNeighboursToBorn() const {return nb_neighbours_to_born;}
+        unsigned int getNbNeighboursToBorn() const {return nb_neighbours_to_born;}
         /// \brief Récupération du nombre de voisins vivants minimum pour rester en vie.
         /// \return Nombre de voisins vivants minimum pour rester en vie.
-        virtual unsigned int getMinNeighboursToStayAlive() const {return min_neighbours_to_stay_alive;}
+        unsigned int getMinNeighboursToStayAlive() const {return min_neighbours_to_stay_alive;}
         /// \brief Récupération du nombre de voisins vivants maximum pour rester en vie.
         /// \return Nombre de voisins vivants maximum pour rester en vie.
-        virtual unsigned int getMaxNeighboursToStayAlive() const {return max_neighbours_to_stay_alive;}
+        unsigned int getMaxNeighboursToStayAlive() const {return max_neighbours_to_stay_alive;}
         /// \brief Acceptation d'un visiteur.
         ///
         /// Permet à la classe SaveManager de visiter cette classe. Implémentation du patron de conception visiteur.

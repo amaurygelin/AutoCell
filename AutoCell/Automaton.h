@@ -39,7 +39,7 @@ class Automaton {
         /// \brief Récupération de la dimension.
         ///
         /// \return La dimension.
-        virtual unsigned int getDim() const{return dimension;}
+        unsigned int getDim() const{return dimension;}
         /// \brief Acceptation d'un visiteur.
         ///
         /// Permet à la classe SaveManager de visiter cette classe. Implémentation du patron de conception visiteur.

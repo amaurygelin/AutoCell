@@ -15,17 +15,16 @@
 #include <QRect>
 #include <QComboBox>
 #include <QString>
+#include <QTimer>
 
 class AutoCellQuad : public QWidget{
 Q_OBJECT
-    QSpinBox* nb_n;
     QSpinBox* min_n;
     QSpinBox* max_n;
     QSpinBox* dim1;
     QSpinBox* dim2;
     QSpinBox* nb_step;
     QLabel* namel;
-    QLabel* nb_nl;
     QLabel* min_nl;
     QLabel* max_nl;
     QLabel* dim1l;
@@ -39,13 +38,22 @@ Q_OBJECT
     QVBoxLayout* couche;
     QPushButton* simulation;
     QPushButton* simulationStep;
+    QPushButton* saveAutomaton;
     QHBoxLayout* simLayout;
+    QPushButton* pauseButton;
+    QTimer* timer;
+    QLabel* loadAutomatonl;
+    QComboBox* loadAutomaton;
+    QSpinBox* speed;
+    QLabel* speedl;
 
 public:
     explicit AutoCellQuad(QWidget* parent = nullptr);
 private:
     bool playSimulation;
     bool stepSimulation;
+    std::vector<std::vector<int>> rules;
+    int rankRules;
 private slots:
     void cellActivation(const QModelIndex& index);
     void launchSimulation();
@@ -56,6 +64,12 @@ private slots:
     void symmetricHGrid();
     void symmetricVGrid();
     void randomGrid();
+    void pause();
+    void saveSettings();
+    void loadSettings();
+    void saveAutom();
+    void loadAutomList();
+    void choiceAutomChanged();
 };
 
 

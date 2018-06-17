@@ -91,12 +91,12 @@ AutoCellElem::AutoCellElem(QWidget *parent) : QWidget(parent) {
     connect(grid, SIGNAL(clicked()), this, SLOT(newGrid()));
     couche->addWidget(grid);
 
-    choice = new QComboBox(this);
-    choice->addItem("Manual filling");
-    choice->addItem("Generate random grid");
-    choice->addItem("Generate symmetric vertical grid");
-    connect(choice, SIGNAL(currentTextChanged(QString)), this, SLOT(choiceChanged(QString)));
-    couche->addWidget(choice);
+    choiceGrid = new QComboBox(this);
+    choiceGrid->addItem("Manual filling");
+    choiceGrid->addItem("Generate random grid");
+    choiceGrid->addItem("Generate symmetric vertical grid");
+    connect(choiceGrid, SIGNAL(currentTextChanged(QString)), this, SLOT(choiceGridChanged(QString)));
+    couche->addWidget(choiceGrid);
 
     simLayout = new QHBoxLayout;
 
@@ -126,7 +126,7 @@ void AutoCellElem::synchronizeSimSteps(int i) {
     simulation->setText("Simulation of "+s2+" generations");
 }
 
-void AutoCellElem::choiceChanged(const QString& s){
+void AutoCellElem::choiceGridChanged(const QString& s){
     Simulator::freeInstance();
     if(s=="Manual filling"){
         this->newGrid();
@@ -397,7 +397,7 @@ void AutoCellElem::saveSettings(){
     int  nb_step_val = nb_step->value();
     saveUiContext("nb_step_key_elem",nb_step_val);
 
-    int choice_val = choice->currentIndex();
+    int choice_val = choiceGrid->currentIndex();
     saveUiContext("choice_key",choice_val);
 
     for(unsigned int counter =  0; counter < dimension->value(); ++counter) {
@@ -423,7 +423,7 @@ void AutoCellElem::loadSettings(){
     nb_step->setValue(nb_step_val.toInt());
 
     QVariant choice_val = loadUiContext("choice_key",0);
-    choice->setCurrentIndex(choice_val.toInt());
+    choiceGrid->setCurrentIndex(choice_val.toInt());
 
     this->newGrid();
 

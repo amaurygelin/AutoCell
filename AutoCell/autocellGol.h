@@ -1,78 +1,57 @@
 #ifndef AUTOCELLGOL_H
 #define AUTOCELLGOL_H
 
-#include <QWidget>
-#include <QSpinBox>
-#include <QLineEdit>
-#include <QLabel>
-#include <QIntValidator>
-#include <QString>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QTableWidget>
-#include <QHeaderView>
-#include <QPushButton>
-#include <QRect>
-#include <QComboBox>
-#include <QString>
-#include <QTimer>
-#include <QVector>
+///
+/// \file autocellGol.h
+/// \brief Fenêtre d'un automate jeu de la vie.
+/// \author Waël
+///
 
-class AutoCellGol : public QWidget{
+#include "autocellabstractgol.h"
+
+/// \class AutoCellGol
+/// \brief Classe gérant une fenêtre d'un automate jeu de la vie.
+///
+/// Permet de générer la fenêtre graphique d'un automate jeu de la vie.
+class AutoCellGol final : public QWidget, public AutoCellAbstractGol{
 Q_OBJECT
-    QSpinBox* nb_n;
-    QSpinBox* min_n;
-    QSpinBox* max_n;
-    QSpinBox* dim1;
-    QSpinBox* dim2;
-    QSpinBox* nb_step;
-    QLabel* namel;
-    QLabel* nb_nl;
-    QLabel* min_nl;
-    QLabel* max_nl;
-    QLabel* dim1l;
-    QLabel* dim2l;
-    QLabel* nb_stepl;
-    QVBoxLayout* numc;
-    QHBoxLayout* numeroc;
-    QTableWidget* depart;
-    QPushButton* grid;
-    QPushButton* pauseButton;
-    QComboBox* choiceGrid;
-    QVBoxLayout* couche;
-    QPushButton* simulation;
-    QPushButton* simulationStep;
-    QHBoxLayout* simLayout;
-    QPushButton* saveAutomaton;
-    QTimer* timer;
-    QLabel* loadAutomatonl;
-    QComboBox* loadAutomaton;
-    QSpinBox* speed;
-    QLabel* speedl;
-
 public:
+    /// \brief Constructeur de la fenêtre.
     explicit AutoCellGol(QWidget* parent = nullptr);
-private:
-    bool playSimulation;
-    bool stepSimulation;
-    std::vector<std::vector<int>> rules;
-    int rankRules;
 private slots:
-    void cellActivation(const QModelIndex& index);
-    void launchSimulation();
-    void launchSimulationStep();
-    void choiceGridChanged(const QString &s);
-    void newGrid();
-    void symmetricDGrid();
-    void symmetricHGrid();
-    void symmetricVGrid();
-    void randomGrid();
-    void pause();
-    void saveSettings();
-    void loadSettings();
-    void saveAutom();
-    void loadAutomList();
-    void choiceAutomChanged();
+    /// \brief Met en pause le jeu.
+    void pause() override;
+
+    /// \brief Crée une nouvelle grille.
+    void newGrid() override;
+    /// \brief Modifie les attributs en fonction de l'automate choisi.
+    void choiceAutomChanged() override;
+    /// \brief Modifie la couleur et la valeur d'une cellule dans la grille graphique.
+    /// \param index : la case du tableau qui doît être modifiée.
+    void cellActivation(const QModelIndex& index) override;
+    /// \brief Lance la simulation complète.
+    void launchSimulation() override;
+    /// \brief Lance la simulation par étapes.
+    void launchSimulationStep() override;
+    /// \brief Initialisation d'une grille le générateur SymmetricDGrid.
+    void symmetricDGrid() override;
+    /// \brief Initialisation d'une grille le générateur SymmetricHGrid.
+    void symmetricHGrid() override;
+    /// \brief Initialisation d'une grille le générateur SymmetricVGrid.
+    void symmetricVGrid() override;
+    /// \brief Initialisation d'une grille le générateur RandomGrid.
+    void randomGrid() override;
+    /// \brief Sauvegarde le contexte.
+    void saveSettings() override;
+    /// \brief Charge le contexte.
+    void loadSettings() override;
+    /// \brief Sauvegarde l'automate.
+    void saveAutom() override;
+    /// \brief Charge l'automate.
+    void loadAutomList() override;
+    /// \brief Gestion de l'initiation d'une grille après choix d'un générateur.
+    /// \param s : le texte associé dans le menu déroulant.
+    void choiceGridChanged(const QString &s) override;
 };
 
 #endif // AUTOCELLGOL_H

@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <QSqlQuery>
 #include <QSettings>
 #include <QDir>
 

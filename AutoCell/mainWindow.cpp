@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent) {
 
       couche = new QVBoxLayout;
 
-      //choix = new QLabel("Veuillez choisir un type d'automate", this);
-      //couche->addWidget(choix);
+      choix = new QLabel("Please choose your automaton", this);
+      couche->addWidget(choix);
 
       elemButton = new QPushButton("Automate Elementaire", this);
       connect(elemButton, SIGNAL(clicked()), this, SLOT(openAutoElem()));
@@ -46,8 +46,4 @@ void MainWindow::openAutoGol(){
 void MainWindow::openAutoQuad(){
     fenetreAutomQl->show();
     this->close();
-}
-
-void initGui(){
-
 }

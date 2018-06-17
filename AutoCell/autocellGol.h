@@ -15,6 +15,8 @@
 #include <QRect>
 #include <QComboBox>
 #include <QString>
+#include <QTimer>
+#include <QVector>
 
 class AutoCellGol : public QWidget{
 Q_OBJECT
@@ -35,18 +37,26 @@ Q_OBJECT
     QHBoxLayout* numeroc;
     QTableWidget* depart;
     QPushButton* grid;
+    QPushButton* pauseButton;
     QComboBox* choiceGrid;
     QVBoxLayout* couche;
     QPushButton* simulation;
     QPushButton* simulationStep;
     QHBoxLayout* simLayout;
-
+    QPushButton* saveAutomaton;
+    QTimer* timer;
+    QLabel* loadAutomatonl;
+    QComboBox* loadAutomaton;
+    QSpinBox* speed;
+    QLabel* speedl;
 
 public:
     explicit AutoCellGol(QWidget* parent = nullptr);
 private:
     bool playSimulation;
     bool stepSimulation;
+    std::vector<std::vector<int>> rules;
+    int rankRules;
 private slots:
     void cellActivation(const QModelIndex& index);
     void launchSimulation();
@@ -57,6 +67,12 @@ private slots:
     void symmetricHGrid();
     void symmetricVGrid();
     void randomGrid();
+    void pause();
+    void saveSettings();
+    void loadSettings();
+    void saveAutom();
+    void loadAutomList();
+    void choiceAutomChanged();
 };
 
 #endif // AUTOCELLGOL_H

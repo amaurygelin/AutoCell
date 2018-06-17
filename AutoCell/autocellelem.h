@@ -14,9 +14,11 @@
 #include <QPushButton>
 #include <QComboBox>
 #include <QString>
+#include <QTimer>
 
 
 class AutoCellElem : public QWidget{
+friend class MainWindow;
 Q_OBJECT
     QSpinBox* num; // numéro
     QSpinBox* nb_step;
@@ -38,6 +40,9 @@ Q_OBJECT
     QPushButton* grid;
     QPushButton* simulation;
     QPushButton* simulationStep;
+    QPushButton* saveAutomaton;
+    QLabel* loadAutomatonl;
+    QComboBox* loadAutomaton;
     QComboBox* choice;
 
 public:
@@ -46,15 +51,21 @@ private:
     bool playSimulation;
     bool stepSimulation;
 private slots:
+    void synchronizeSimSteps(int i);
     void synchronizeNumToNumBit(int i);
     void synchronizeNumBitToNum(const QString& s);
     void cellActivation(const QModelIndex& index);
     void launchSimulation();
     void launchSimulationStep();
     void choiceChanged(const QString& s);
+    void choiceAutomChanged();
     void newGrid();
     void symmetricVGrid();
     void randomGrid();
+    void saveSettings();
+    void loadSettings();
+    void saveAutom();
+    void loadAutomList();
 };
 
 #endif // AUTOCELL_H

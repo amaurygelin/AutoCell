@@ -6,12 +6,16 @@
 #include "symmetricDGridGenerator.h"
 #include "symmetricHGridGenerator.h"
 #include "symmetricVGridGenerator.h"
+#include "saveuicontext.h"
+#include "dbManager.h"
+#include <string>
 
-
+extern DbManager dbTest;
 
 AutoCellElem::AutoCellElem(QWidget *parent) : QWidget(parent) {
     stepSimulation=false;
     playSimulation=false;
+
 
     namel = new QLabel("Elementary automaton", this);
 
@@ -62,12 +66,26 @@ AutoCellElem::AutoCellElem(QWidget *parent) : QWidget(parent) {
     nb_step = new QSpinBox(this);
     nb_step->setRange(0, 255);
     nb_step->setValue(0);
-    nb_stepl = new QLabel("Number of steps", this);
+    nb_stepl = new QLabel("Number of steps(=generations) and simulator's number of grids", this);
     couche->addWidget(nb_stepl);
     couche->addWidget(nb_step);
 
+
+
     depart=nullptr;
     grids=nullptr;
+
+    saveAutomaton = new QPushButton("Save Automaton", this);
+    connect(saveAutomaton, SIGNAL(clicked()), this, SLOT(saveAutom()));
+    couche->addWidget(saveAutomaton);
+
+    loadAutomatonl = new QLabel("Choose an automaton to load (rule)", this);
+    couche->addWidget(loadAutomatonl);
+    loadAutomaton = new QComboBox(this);
+    couche->addWidget(loadAutomaton);
+    connect(loadAutomaton, SIGNAL(activated(int)), this, SLOT(choiceAutomChanged()));
+
+    loadAutomList();
 
     grid = new QPushButton("New Grid", this);
     connect(grid, SIGNAL(clicked()), this, SLOT(newGrid()));
@@ -81,14 +99,31 @@ AutoCellElem::AutoCellElem(QWidget *parent) : QWidget(parent) {
     couche->addWidget(choice);
 
     simLayout = new QHBoxLayout;
-    simulation = new QPushButton("Play simulation", this);
+
+    QString s1 = s1.number((nb_step->value()));
+    simulation = new QPushButton("Simulation of "+s1+" generations", this);
     connect(simulation, SIGNAL(clicked()), this, SLOT(launchSimulation()));
     simLayout->addWidget(simulation);
+
+
     simulationStep = new QPushButton("Simulation step by step", this);
     connect(simulationStep, SIGNAL(clicked()), this, SLOT(launchSimulationStep()));
     simLayout->addWidget(simulationStep);
     couche->addLayout(simLayout);
     setLayout(couche);
+
+    loadSettings();
+
+    QString s2 = s2.number((nb_step->value()));
+    simulation->setText("Simulation of "+s2+" generations");
+
+    connect(nb_step, SIGNAL(valueChanged(int)), this, SLOT(synchronizeSimSteps(int)));
+    connect(QApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(saveSettings()));
+}
+
+void AutoCellElem::synchronizeSimSteps(int i) {
+    QString s2 = s2.number(i);
+    simulation->setText("Simulation of "+s2+" generations");
 }
 
 void AutoCellElem::choiceChanged(const QString& s){
@@ -350,4 +385,78 @@ void AutoCellElem::launchSimulationStep() {
         }
     }
 }
+
+
+void AutoCellElem::saveSettings(){
+    int  num_val = num->value();
+    saveUiContext("num_key_elem",num_val);
+
+    int  dimension_val = dimension->value();
+    saveUiContext("dimension_key_elem",dimension_val);
+
+    int  nb_step_val = nb_step->value();
+    saveUiContext("nb_step_key_elem",nb_step_val);
+
+    int choice_val = choice->currentIndex();
+    saveUiContext("choice_key",choice_val);
+
+    for(unsigned int counter =  0; counter < dimension->value(); ++counter) {
+        QString s = s.number((counter));
+        if(depart->item(0, counter)->backgroundColor() == "black") {
+            saveUiContext("item_key_elem"+s,1);
+        }else{
+            saveUiContext("item_key_elem"+s,0);
+        }
+    }
+
+}
+
+
+void AutoCellElem::loadSettings(){
+    QVariant num_val = loadUiContext("num_key_elem",0);
+    num->setValue(num_val.toInt());
+
+    QVariant dimension_val = loadUiContext("dimension_key_elem",0);
+    dimension->setValue(dimension_val.toInt());
+
+    QVariant nb_step_val = loadUiContext("nb_step_key_elem",0);
+    nb_step->setValue(nb_step_val.toInt());
+
+    QVariant choice_val = loadUiContext("choice_key",0);
+    choice->setCurrentIndex(choice_val.toInt());
+
+    this->newGrid();
+
+    for(unsigned int counter =  0; counter < dimension->value(); ++counter) {
+        QString s = s.number((counter));
+        QVariant item_val = loadUiContext("item_key_elem"+s,0);
+        if(item_val.toInt()==0){
+            depart->item(0, counter)->setBackgroundColor("white");
+        }else{
+            depart->item(0, counter)->setBackgroundColor("black");
+        }
+    }
+
+}
+
+void AutoCellElem::saveAutom(){
+    ElementaryAutomaton ea(num->value());
+    ea.accept(dbTest);
+}
+
+
+void AutoCellElem::loadAutomList(){
+    QSqlQuery query = dbTest.loadElementaryAutomaton();
+    while (query.next())
+    {
+        int rule = query.value(0).toInt();
+        loadAutomaton->addItem(query.value(0).toString(),rule);
+    }
+}
+
+void AutoCellElem::choiceAutomChanged(){
+    num->setValue(loadAutomaton->currentData().toInt());
+}
+
+
 
